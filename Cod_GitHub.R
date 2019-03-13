@@ -1,4 +1,4 @@
-#various GAM models
+#Analyses for cod size at age in the Bering Sea
 library(mgcv)
 library(maps)
 library(mapdata)
@@ -23,13 +23,13 @@ land.mask<-(bathy.mat*0)+1
 range(land.mask,na.rm=T)
 
 
-# IMPORT COD DATA
+# IMPORT COD DATA (age, length, and catch)
 fishdata<- read.table("Age.txt", header = TRUE) #Age samples
 catchdata<- read.table("Catch.txt", header = TRUE) # stations and catch
 lengthdata<- read.table("Length.txt", header = TRUE) #length
 
 
-#Make prediction grid for plotting temperature
+#Make prediction grid for plotting temperature (will be used later on)
 lond<-unique(bathy.dat$lon)
 latd<-sort(unique(bathy.dat$lat))
 predict.grid<-expand.grid(lond,latd)
@@ -83,7 +83,7 @@ points(subdata$LENGTH[subdata$SEX==1], subdata$AGE[subdata$SEX==1],pch=3,cex=0.5
 points(subdata$LENGTH[subdata$SEX==2], subdata$AGE[subdata$SEX==2]-0.1,pch=3,cex=0.5,col='blue')
 }
 
-#Round ages and set age-0 predictions = 1
+#Round ages to nearest integer and set age = 0 predictions = 1
 lengthdata$AGE_ROUND<-round(lengthdata$AGE,0)
 lengthdata$AGE_ROUND[lengthdata$AGE_ROUND==0]<-1
 table(lengthdata$AGE_ROUND)
